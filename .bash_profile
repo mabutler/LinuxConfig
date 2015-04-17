@@ -16,17 +16,39 @@ export EDITOR
 
 bind -f ~/.inputrc
 
-#if [[ -z "$TMUX" ]]; then
-#	if [[ $(tmux info) == *dev02Session* ]]; then
-#		tmux attach -t dev02Session;
-#	else
-#		exec tmux \
-#		new -s dev02Session 'clear && tail -F /hsphere/local/var/httpd/logs/php_error.log'\; \
-#		split-window -v -p 80 -t 0 'unset TMUX; tmux'\; \
-#		set status off \;
-#	fi
-#fi
+if hash tmux 2>/dev/null; then
+	if [[ -z "$TMUX" ]]; then
+		if [[ $(tmux info) == *dev02Session* ]]; then
+			tmux attach -t dev02Session;
+		else
+			exec tmux \
+			new -s dev02Session 'clear && tail -F /hsphere/local/var/httpd/logs/php_error.log'\; \
+			split-window -v -p 80 -t 0 'unset TMUX; tmux'\; \
+			set status off \;
+		fi
+	fi
+fi
 
+if [ -d .git ]; then
+	git update-index -q --ignore-submodules --refresh
+	err=0
+
+	if ! git diff-files --quiet --ignore-submodules --
+	then
+		err=1
+	fi
+
+	if ! git diff-index --cached --quiet HEAD --ignore-submodules --
+	then
+		err=1
+	fi
+
+	if [ $err = 0 ]
+	then
+		git fetch --quiet
+		git pull --quiet --ff-only
+	fi
+fi
 # get() { printf "\033]0;__pw:"`pwd`"\007" ; 
 # for file in $* ; do printf "\033]0;__rv:"${file}"\007" ; done ; 
 # printf "\033]0;__ti\007" ; }
