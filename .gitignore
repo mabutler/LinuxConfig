@@ -1,0 +1,11 @@
+*
+!.bash_profile
+!.bashrc
+!.git-completion.bashrc
+!.gitconfig
+!.gitignore
+!rmate
+!nano_syntax
+!.tmux.conf
+!.nanorc
+!.my.cnf
