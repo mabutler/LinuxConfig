@@ -1,3 +1,4 @@
+reload=0
 if [ -d .git ]; then
 	git fetch --quiet
 	git update-index -q --ignore-submodules --refresh
@@ -20,8 +21,7 @@ if [ -d .git ]; then
 	if [ $LOCAL != $REMOTE ] && [ $LOCAL = $BASE ] && [ $err = 0 ]
 	then
 		git pull --quiet --ff-only
-		source ~/.bash_profile
-		exit 0
+		reload=1
 	fi
 fi
 
@@ -69,3 +69,8 @@ sublime () {
 
 	return 0
 }
+
+if [ $reload = 1 ]
+then
+	source ~/.bash_profile
+fi
