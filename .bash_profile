@@ -1,3 +1,29 @@
+if [ -d .git ]; then
+	git fetch --quiet
+	git update-index -q --ignore-submodules --refresh
+	err=0
+
+	if ! git diff-files --quiet --ignore-submodules --
+	then
+		err=1
+	fi
+
+	if ! git diff-index --cached --quiet HEAD --ignore-submodules --
+	then
+		err=1
+	fi
+
+	LOCAL=$(git rev-parse @{0})
+	REMOTE=$(git rev-parse @{u})
+	BASE=$(git merge-base @{0} @{u})
+
+	if [ $LOCAL != $REMOTE ] && [ $LOCAL = $BASE ] && [ $err = 0 ]
+	then
+		git pull --quiet --ff-only
+		source ~/.bash_profile
+		exit 0
+	fi
+fi
 
 # Get the aliases and functions
 if [ -f ~/.bashrc ]; then
@@ -29,26 +55,6 @@ if hash tmux 2>/dev/null; then
 	fi
 fi
 
-if [ -d .git ]; then
-	git update-index -q --ignore-submodules --refresh
-	err=0
-
-	if ! git diff-files --quiet --ignore-submodules --
-	then
-		err=1
-	fi
-
-	if ! git diff-index --cached --quiet HEAD --ignore-submodules --
-	then
-		err=1
-	fi
-
-	if [ $err = 0 ]
-	then
-		git fetch --quiet
-		git pull --quiet --ff-only
-	fi
-fi
 # get() { printf "\033]0;__pw:"`pwd`"\007" ; 
 # for file in $* ; do printf "\033]0;__rv:"${file}"\007" ; done ; 
 # printf "\033]0;__ti\007" ; }
