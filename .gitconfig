@@ -4,7 +4,6 @@
 [core]
 	fileMode = false
 	preloadindex = true
-	editor = nano
 	excludesfiles = ~/.gitignore
 	pager = less -x2
 [color]
