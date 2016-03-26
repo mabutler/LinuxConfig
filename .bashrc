@@ -1,6 +1,6 @@
 # path
-export PATH="/bin:/usr/bin:/usr/local/bin:/sbin:/usr/sbin:/usr/local/sbin:/hsphere/shared/bin:/hsphere/shared/sbin"
- 
+export PATH=$PATH:/bin:/usr/bin:/usr/local/bin:/sbin:/usr/sbin:/usr/local/sbin:/hsphere/shared/bin:/hsphere/shared/sbin
+
 # export PS1='\h:\w\$ '
 PS1="\n[\h] \[\e[33;1m\]\u \[\e[32;1m\]\D{%H:%M} \[\e[0m\]\w \[\e[30;1m\]# \[\e[0m\]"
 umask 022
